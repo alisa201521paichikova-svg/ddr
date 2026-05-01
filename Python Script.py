@@ -17,7 +17,7 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.client.session.aiohttp import AiohttpSession
 
 # ==================== КОНСТАНТЫ ====================
-API_TOKEN = '8549705364:AAFwhW7KExE9a-FkpMLS7PnDrlspx96TL1c'
+API_TOKEN = '8644714266:AAHUQ3dI2eUlAacfzSvPWI8CHitl0N6XUA8'
 ADMIN_ID = 6482609003 # Твой ID bnyk
 
 # Инициализируем бота напрямую (на Render прокси НЕ НУЖНЫ)
