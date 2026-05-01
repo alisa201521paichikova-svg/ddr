@@ -20,11 +20,8 @@ from aiogram.client.session.aiohttp import AiohttpSession
 API_TOKEN = '8549705364:AAGgnRbW0bRtJ0pEFKfs4N7jUwehEOtfyWE'
 ADMIN_ID = 6482609003 # Твой ID bnyk
 
-# Самый надежный способ настройки прокси для PythonAnywhere
-session = AiohttpSession(proxy="http://proxy.server:3128")
-
-# Инициализируем бота
-bot = Bot(token=API_TOKEN, session=session)
+# Инициализируем бота напрямую (на Render прокси НЕ НУЖНЫ)
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 # ==================== СОСТОЯНИЯ FSM ====================
@@ -854,4 +851,10 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import asyncio
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        print("Бот остановлен")
+    except Exception as e:
+        print(f"Ошибка: {e}")
