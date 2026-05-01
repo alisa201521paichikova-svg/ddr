@@ -850,11 +850,54 @@ async def main():
     print("🤖 Бот запущен!")
     await dp.start_polling(bot)
 
+import os
+from aiohttp import web
+import asyncio
+
+# Функция для "пустого" веб-сервера
+async def handle(request):
+    return web.Response(text="Bot is running!")
+
+async def main():
+    # Настройка веб-сервера для Render
+    app = web.Application()
+    app.router.add_get("/", handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    # Render сам подставит нужный порт в переменную PORT
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+
+    # Твой запуск бота ( polling )
+    print(f"🤖 Бот запущен на порту {port}!")
+    await dp.start_polling(bot)
+
+import os
+from aiohttp import web
+import asyncio
+
+# Функция для "пустого" веб-сервера
+async def handle(request):
+    return web.Response(text="Bot is running!")
+
+async def main():
+    # Настройка веб-сервера для Render
+    app = web.Application()
+    app.router.add_get("/", handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    # Render сам подставит нужный порт в переменную PORT
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+
+    # Твой запуск бота ( polling )
+    print(f"🤖 Бот запущен на порту {port}!")
+    await dp.start_polling(bot)
+
 if __name__ == "__main__":
-    import asyncio
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         print("Бот остановлен")
-    except Exception as e:
-        print(f"Ошибка: {e}")
