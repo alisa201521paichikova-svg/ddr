@@ -859,41 +859,33 @@ async def handle(request):
     return web.Response(text="Bot is running!")
 
 async def main():
-    # Настройка веб-сервера для Render
-    app = web.Application()
-    app.router.add_get("/", handle)
-    runner = web.AppRunner(app)
-    await runner.setup()
-    # Render сам подставит нужный порт в переменную PORT
-    port = int(os.environ.get("PORT", 10000))
-    site = web.TCPSite(runner, "0.0.0.0", port)
-    await site.start()
-
-    # Твой запуск бота ( polling )
-    print(f"🤖 Бот запущен на порту {port}!")
-    await dp.start_polling(bot)
-
-import os
-from aiohttp import web
+   import os
 import asyncio
+from aiohttp import web
+from aiogram import Bot, Dispatcher
 
-# Функция для "пустого" веб-сервера
+# 1. Добавляем микро-сервер для Render
 async def handle(request):
-    return web.Response(text="Bot is running!")
+    return web.Response(text="Бот bnyk работает!")
 
 async def main():
-    # Настройка веб-сервера для Render
+    # Настройка веб-части
     app = web.Application()
     app.router.add_get("/", handle)
     runner = web.AppRunner(app)
     await runner.setup()
-    # Render сам подставит нужный порт в переменную PORT
+    
+    # Порт, который требует Render
     port = int(os.environ.get("PORT", 10000))
     site = web.TCPSite(runner, "0.0.0.0", port)
     await site.start()
+    print(f"✅ Веб-интерфейс запущен на порту {port}")
 
-    # Твой запуск бота ( polling )
-    print(f"🤖 Бот запущен на порту {port}!")
+    # 2. ОЧЕНЬ ВАЖНО: Удаляем вебхук и сбрасываем старые обновления
+    # Это мгновенно лечит TelegramConflictError
+    await bot.delete_webhook(drop_pending_updates=True)
+    
+    print("🤖 Запуск polling...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
